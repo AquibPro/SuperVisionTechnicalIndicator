@@ -43,6 +43,15 @@ lower = basis - dev
 shortEma = ta.ema(close, shortEmaLength)
 longEma = ta.ema(close, longEmaLength)
 
+// --- Envelope Parameters ---
+envLength = input.int(20, title="Envelope Length", minval=1)
+percent = input.float(10.0, title="Envelope Percentage", minval=0.1)
+exponential = input(false, title="Use Exponential Moving Average for Envelope")
+envBasis = exponential ? ta.ema(src, envLength) : ta.sma(src, envLength)
+k = percent / 100.0
+envUpper = envBasis * (1 + k)
+envLower = envBasis * (1 - k)
+
 // --- Plotting Supertrend ---
 plot(supertrend, color=direction < 0 ? color.green : color.red, title="Supertrend", linewidth=2, style=plot.style_line)
 
@@ -55,6 +64,12 @@ fill(p1, p2, title="Bollinger Bands Background", color=color.rgb(33, 150, 243, 9
 // --- Plotting 9-day and 21-day EMAs ---
 plot(shortEma, "9-day EMA", color=color.orange, linewidth=2)
 plot(longEma, "21-day EMA", color=color.purple, linewidth=2)
+
+// --- Plotting Envelope ---
+plot(envBasis, "Envelope Basis", color=color.orange)
+u = plot(envUpper, "Envelope Upper", color=color.blue)
+l = plot(envLower, "Envelope Lower", color=color.blue)
+fill(u, l, color=color.rgb(33, 150, 243, 95), title="Envelope Background")
 
 // --- RSI Plotting and Highlighting ---
 rsiColor = rsi < rsiBuyZone ? color.green : rsi > rsiSellZone ? color.red : color.yellow

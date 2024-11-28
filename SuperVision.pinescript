@@ -74,3 +74,5 @@ fill(u, l, color=color.rgb(33, 150, 243, 95), title="Envelope Background")
 // --- RSI Plotting and Highlighting ---
 rsiColor = rsi < rsiBuyZone ? color.green : rsi > rsiSellZone ? color.red : color.yellow
 bgcolor(rsiColor, transp=90)
+
+plot(rsi, "RSI", color=color.rgb(255, 255, 255, 100), linewidth=2, display=display.status_line)
